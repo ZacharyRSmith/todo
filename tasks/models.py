@@ -18,10 +18,13 @@ class Activity(models.Model):
 
 
 class Task(Activity):
-    def is_overdue(self):
-        return self.due_date < timezone.now() && not self.is_finished
-    is_overdue.admin_order_field = 'due_date'
-    is_overdue.boolean = True
+    def is_on_time(self):
+        if self.is_finished:
+            return None
+
+        return self.due_date > timezone.now()
+    is_on_time.admin_order_field = 'due_date'
+    is_on_time.boolean = True
 
 class Subtask(Activity):
     supertask = models.ForeignKey(Task)

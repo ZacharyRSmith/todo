@@ -11,7 +11,7 @@ class SubtaskInline(admin.TabularInline):
 
 class TaskAdmin(admin.ModelAdmin):
     fields = ['name', 'due_date', 'description', 'is_finished']
-    list_display = ('name', 'description', 'due_date', 'is_overdue', 'is_finished')
+    list_display = ('name', 'description', 'due_date', 'is_on_time', 'is_finished')
     list_filter = ['due_date', 'is_finished']
     inlines = [SubtaskInline]
 
