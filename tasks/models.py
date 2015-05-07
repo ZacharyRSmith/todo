@@ -15,6 +15,8 @@ class Task(models.Model):
 
     def is_overdue(self):
         return self.due_date < timezone.now()
+    is_overdue.admin_order_field = 'due_date'
+    is_overdue.boolean = True
 
 class Subtask(Task):
     supertask = models.ForeignKey(Task, related_name = 'supertask')
