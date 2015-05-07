@@ -23,3 +23,7 @@ class ActivityMethodTests(TestCase):
         past_date = timezone.now() - datetime.timedelta(days = 30)
         task = Task(due_date = past_date)
         self.assertEqual(task.is_on_time(), False)
+
+    def test_str(self):
+        task = Task(name = 'Foobar')
+        self.assertEqual(str(task), 'Foobar')
