@@ -19,7 +19,7 @@ class Activity(models.Model):
 
 class Task(Activity):
     def is_overdue(self):
-        return self.due_date < timezone.now()
+        return self.due_date < timezone.now() && not self.is_finished
     is_overdue.admin_order_field = 'due_date'
     is_overdue.boolean = True
 
