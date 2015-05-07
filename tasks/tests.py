@@ -1,7 +1,8 @@
 import datetime
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.test import TestCase
-from .models import Activity, Task
+from .models import Activity, Subtask, Task
 
 
 class ActivityMethodTests(TestCase):
@@ -27,3 +28,27 @@ class ActivityMethodTests(TestCase):
     def test_str(self):
         task = Task(name = 'Foobar')
         self.assertEqual(str(task), 'Foobar')
+
+
+def create_task():
+    return Task.objects.create(name = "Foo",
+                               description = "Foobar",
+                               due_date = timezone.now())
+
+
+class SubtaskMethodTests(TestCase):
+
+    def test_clean_with_bad_due_date(self):
+        future_date = timezone.now() + datetime.timedelta(days = 30)
+        task = create_task()
+        subtask = Subtask(supertask = task, due_date = future_date)
+        self.assertRaises(ValidationError, subtask.clean)
+
+    def test_clean_with_good_due_date(self):
+        past_date = timezone.now() - datetime.timedelta(days = 30)
+        task = create_task()
+        subtask = Subtask(supertask = task, due_date = past_date)
+        try:
+            subtask.clean()
+        except ValidationError:
+            self.fail("subtask.clean() should not have raised a ValidationError!")
