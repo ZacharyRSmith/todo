@@ -11,6 +11,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Subtask',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=40)),
+                ('description', models.CharField(max_length=200)),
+                ('due_date', models.DateTimeField()),
+                ('is_finished', models.BooleanField(default=False)),
+            ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
             name='Task',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -19,13 +32,13 @@ class Migration(migrations.Migration):
                 ('due_date', models.DateTimeField()),
                 ('is_finished', models.BooleanField(default=False)),
             ],
+            options={
+                'abstract': False,
+            },
         ),
-        migrations.CreateModel(
-            name='Subtask',
-            fields=[
-                ('task_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='tasks.Task')),
-                ('supertask', models.ForeignKey(related_name='supertask', to='tasks.Task')),
-            ],
-            bases=('tasks.task',),
+        migrations.AddField(
+            model_name='subtask',
+            name='supertask',
+            field=models.ForeignKey(to='tasks.Task'),
         ),
     ]
